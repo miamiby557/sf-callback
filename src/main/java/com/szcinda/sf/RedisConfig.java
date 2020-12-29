@@ -1,0 +1,28 @@
+package com.szcinda.sf;
+
+import com.alibaba.fastjson.support.spring.GenericFastJsonRedisSerializer;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericToStringSerializer;
+
+@Configuration
+public class RedisConfig {
+    public RedisConfig() {
+    }
+
+    @Bean
+    public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<Object, Object> redisTemplate = new RedisTemplate();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        GenericFastJsonRedisSerializer genericFastJsonRedisSerializer = new GenericFastJsonRedisSerializer();
+        redisTemplate.setKeySerializer(new GenericToStringSerializer(Object.class));
+        redisTemplate.setValueSerializer(genericFastJsonRedisSerializer);
+        redisTemplate.setHashKeySerializer(new GenericToStringSerializer(Object.class));
+        redisTemplate.setHashValueSerializer(genericFastJsonRedisSerializer);
+        redisTemplate.setEnableTransactionSupport(true);
+        redisTemplate.afterPropertiesSet();
+        return redisTemplate;
+    }
+}
