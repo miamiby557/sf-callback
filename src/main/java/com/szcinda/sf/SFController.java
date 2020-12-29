@@ -86,6 +86,7 @@ public class SFController {
         for (int i = 0; i < count; ++i) {
             this.redisTemplate.opsForValue().set(this.pattern + ":test" + i, "value" + i, 1800L, TimeUnit.SECONDS);
         }
+
         stopWatch.stop();
         stopWatch.start("读取REDIS缓存");
         Set<String> keys = this.redisTemplate.keys("H*");
